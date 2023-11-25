@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tes;
+use App\Models\Hasil;
 use App\Models\Kasus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,6 +48,28 @@ class TesController extends Controller
             $item->persen = ($item->jumlah_cocok / $item->pembagi) * 100;
             return $item;
         });
-        return view('home');
+
+        //save
+
+        $hasil = max($data_saya->pluck('persen')->toArray());
+        $nomor_kasus = $data_saya->where('persen', $hasil)->first()->nomor_kasus;
+        $kepribadian = Kasus::where('nomor_kasus', $nomor_kasus)->first()->kepribadian->nama;
+
+        $check = Hasil::where('user_id', Auth::user()->id)->first();
+        if ($check == null) {
+            $n = new Hasil;
+            $n->user_id = Auth::user()->id;
+            $n->hasil = $hasil;
+            $n->kepribadian = $kepribadian;
+            $n->save();
+        } else {
+            $check->update([
+                'hasil' => $hasil,
+                'kepribadian' => $kepribadian,
+            ]);
+        }
+
+        Session::flash('success', 'Berhasil Di Proses');
+        return back();
     }
 }
