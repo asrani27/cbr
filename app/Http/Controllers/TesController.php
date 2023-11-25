@@ -30,7 +30,7 @@ class TesController extends Controller
 
     public function delete($id)
     {
-        Tes::find($id)->delete()a;
+        Tes::find($id)->delete();
         Session::flash('success', 'berhasil dihapus');
         return back();
     }
