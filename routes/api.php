@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('/user', [RestController::class, 'user']);
+    Route::post('/gantipassword', [RestController::class, 'gantipassword']);
+    Route::post('/tambah', [RestController::class, 'tambahCiri']);
+    Route::get('/deleteciri/{id}', [RestController::class, 'deleteCiri']);
 });
+Route::post('/login', [RestController::class, 'login']);
+Route::post('/register', [RestController::class, 'register']);
+Route::get('/ciri', [RestController::class, 'ciri']);
