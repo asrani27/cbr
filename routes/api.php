@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/gantipassword', [RestController::class, 'gantipassword']);
     Route::post('/tambah', [RestController::class, 'tambahCiri']);
     Route::get('/deleteciri/{id}', [RestController::class, 'deleteCiri']);
+    Route::get('/checkhasil', [RestController::class, 'checkHasil']);
 });
 Route::post('/login', [RestController::class, 'login']);
 Route::post('/register', [RestController::class, 'register']);
